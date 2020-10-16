@@ -7,7 +7,7 @@ import (
 	"math/rand"
 	"strconv"
 
-	"github.com/go-resty/resty"
+	"github.com/go-resty/resty/v2"
 	"github.com/golibs/telegram-bot-api/responses"
 	"github.com/golibs/telegram-bot-api/structs"
 )
