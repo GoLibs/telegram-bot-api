@@ -7,9 +7,9 @@ import (
 	"math/rand"
 	"strconv"
 
+	"github.com/GoLibs/telegram-bot-api/responses"
+	"github.com/GoLibs/telegram-bot-api/structs"
 	"github.com/go-resty/resty/v2"
-	"github.com/golibs/telegram-bot-api/responses"
-	"github.com/golibs/telegram-bot-api/structs"
 )
 
 func (tb *TelegramBot) prepareRequest(config config, request *resty.Request) {

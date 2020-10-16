@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/golibs/telegram-bot-api/structs"
+	"github.com/GoLibs/telegram-bot-api/structs"
 )
 
 type sendMediaGroup struct {

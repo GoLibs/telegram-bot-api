@@ -1,6 +1,6 @@
 package tools
 
-import "github.com/golibs/telegram-bot-api/structs"
+import "github.com/GoLibs/telegram-bot-api/structs"
 
 type Keyboards struct {
 }

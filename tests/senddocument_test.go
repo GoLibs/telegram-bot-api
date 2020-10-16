@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/golibs/telegram-bot-api/structs"
+	"github.com/GoLibs/telegram-bot-api/structs"
 
-	go_telegram_bot_api "github.com/golibs/telegram-bot-api"
+	go_telegram_bot_api "github.com/GoLibs/telegram-bot-api"
 )
 
 func TestSendDocument(t *testing.T) {

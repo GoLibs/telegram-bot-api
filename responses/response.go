@@ -3,7 +3,7 @@ package responses
 import (
 	"encoding/json"
 
-	"github.com/golibs/telegram-bot-api/structs"
+	"github.com/GoLibs/telegram-bot-api/structs"
 )
 
 type Response struct {

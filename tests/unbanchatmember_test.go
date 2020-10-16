@@ -6,7 +6,7 @@ import (
 
 	"github.com/kr/pretty"
 
-	go_telegram_bot_api "github.com/golibs/telegram-bot-api"
+	go_telegram_bot_api "github.com/GoLibs/telegram-bot-api"
 )
 
 func TestUnbanChatMember(t *testing.T) {

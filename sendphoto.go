@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io"
 
-	"github.com/golibs/telegram-bot-api/structs"
+	"github.com/GoLibs/telegram-bot-api/structs"
 )
 
 type sendPhoto struct {

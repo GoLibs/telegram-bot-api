@@ -5,12 +5,12 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/golibs/telegram-bot-api/tools"
+	"github.com/GoLibs/telegram-bot-api/tools"
 
-	"github.com/golibs/telegram-bot-api/responses"
+	"github.com/GoLibs/telegram-bot-api/responses"
 
+	"github.com/GoLibs/telegram-bot-api/structs"
 	"github.com/go-resty/resty/v2"
-	"github.com/golibs/telegram-bot-api/structs"
 )
 
 type TelegramBot struct {

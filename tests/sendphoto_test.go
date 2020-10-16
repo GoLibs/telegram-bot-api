@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	go_telegram_bot_api "github.com/golibs/telegram-bot-api"
+	go_telegram_bot_api "github.com/GoLibs/telegram-bot-api"
 )
 
 func TestSendPhoto(t *testing.T) {

@@ -1,4 +1,4 @@
-module github.com/golibs/telegram-bot-api
+module github.com/GoLibs/telegram-bot-api
 
 go 1.14
 
