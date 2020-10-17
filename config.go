@@ -1,6 +1,6 @@
 package go_telegram_bot_api
 
-type config interface {
+type Config interface {
 	method() string
 	endpoint() string
 	response() interface{}

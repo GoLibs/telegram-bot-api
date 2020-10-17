@@ -304,7 +304,7 @@ func (tb *TelegramBot) GetUpdatesChannel(config *getUpdates) (channel structs.Up
 	return ch, err
 }
 
-func (tb *TelegramBot) Send(config config) (result *responses.Response, err error) {
+func (tb *TelegramBot) Send(config Config) (result *responses.Response, err error) {
 	request := tb.client.R()
 	tb.prepareRequest(config, request)
 	res, err := request.Execute(config.method(), config.endpoint())

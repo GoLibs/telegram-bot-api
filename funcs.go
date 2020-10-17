@@ -12,7 +12,7 @@ import (
 	"github.com/go-resty/resty/v2"
 )
 
-func (tb *TelegramBot) prepareRequest(config config, request *resty.Request) {
+func (tb *TelegramBot) prepareRequest(config Config, request *resty.Request) {
 	if val, isFile := config.(file); isFile && len(val.medias()) != 0 {
 		for _, info := range val.medias() {
 			if info.Reader != nil {
@@ -29,7 +29,7 @@ func (tb *TelegramBot) prepareRequest(config config, request *resty.Request) {
 	}
 }
 
-func (tb *TelegramBot) getFormData(config config) (fd map[string]string) {
+func (tb *TelegramBot) getFormData(config Config) (fd map[string]string) {
 	j, _ := config.marshalJSON()
 	var result map[string]interface{}
 	_ = json.Unmarshal(j, &result)
@@ -62,7 +62,7 @@ func (tb *TelegramBot) getFormData(config config) (fd map[string]string) {
 	return
 }
 
-func (tb TelegramBot) getMessageResponse(resp *resty.Response, config config) (response *responses.Response, err error) {
+func (tb TelegramBot) getMessageResponse(resp *resty.Response, config Config) (response *responses.Response, err error) {
 	defer resp.RawBody().Close()
 	j := json.NewDecoder(resp.RawBody())
 	response = &responses.Response{}
