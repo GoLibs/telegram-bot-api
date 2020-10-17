@@ -4,5 +4,5 @@ go 1.14
 
 require (
 	github.com/go-resty/resty/v2 v2.3.0
-	github.com/kr/pretty v0.2.1 // indirect
+	github.com/kr/pretty v0.2.1
 )
