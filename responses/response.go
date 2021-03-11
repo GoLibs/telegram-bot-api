@@ -23,4 +23,5 @@ type Response struct {
 	User              *structs.User              `json:"-"`
 	File              *structs.File              `json:"-"`
 	StickerSet        *structs.StickerSet        `json:"-"`
+	MessageId         *structs.MessageId         `json:"-"`
 }

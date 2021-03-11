@@ -9,7 +9,7 @@ type Tests struct {
 func (t Tests) Defaults() Tests {
 	return Tests{
 		ChatId:   207260097,
-		BotToken: "638967213:AAEniQjX2XeOaGwouNU48G3v4Z0zIaHrz9o",
+		BotToken: "1639631468:AAGMLl1184VfQRJF6lX_QClfrgg-HAxuRuA",
 		UserId:   81997375,
 	}
 }

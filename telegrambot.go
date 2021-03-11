@@ -67,6 +67,14 @@ func (tb *TelegramBot) Message() (m *sendMessage) {
 	return
 }
 
+func (tb *TelegramBot) CopyMessage() (m *copyMessage) {
+	m = &copyMessage{parent: tb}
+	if tb.recipientChatId != 0 {
+		m.SetChatId(tb.recipientChatId)
+	}
+	return
+}
+
 func (tb *TelegramBot) EditMessageText() (m *editMessageText) {
 	m = &editMessageText{parent: tb}
 	if tb.recipientChatId != 0 {

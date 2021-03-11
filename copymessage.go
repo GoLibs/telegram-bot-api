@@ -47,8 +47,7 @@ func (cm *copyMessage) marshalJSON() ([]byte, error) {
 }
 
 func (cm *copyMessage) response() interface{} {
-	var i int64
-	return &i
+	return &structs.MessageId{}
 }
 
 func (cm *copyMessage) SetChatId(chatId int64) *copyMessage {
