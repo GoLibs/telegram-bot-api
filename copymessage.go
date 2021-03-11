@@ -121,6 +121,11 @@ func (cm *copyMessage) SetMessage(message *structs.Message) *copyMessage {
 	return cm
 }
 
+func (cm *copyMessage) SetReplyMarkup(markup interface{}) *copyMessage {
+	cm.replyMarkup = &markup
+	return cm
+}
+
 func (cm *copyMessage) method() string {
 	return "POST"
 }
