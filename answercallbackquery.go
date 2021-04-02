@@ -2,6 +2,8 @@ package go_telegram_bot_api
 
 import (
 	"encoding/json"
+
+	"github.com/GoLibs/telegram-bot-api/structs"
 )
 
 type answerCallbackQuery struct {
@@ -30,8 +32,7 @@ func (sv *answerCallbackQuery) marshalJSON() ([]byte, error) {
 }
 
 func (sv *answerCallbackQuery) response() interface{} {
-	var result bool
-	return &result
+	return structs.ResponseTypeBool()
 }
 
 func (sv *answerCallbackQuery) method() string {

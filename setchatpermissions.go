@@ -25,8 +25,7 @@ func (scp *setChatPermissions) marshalJSON() ([]byte, error) {
 }
 
 func (scp *setChatPermissions) response() interface{} {
-	var result bool
-	return &result
+	return structs.ResponseTypeBool()
 }
 
 func (scp *setChatPermissions) method() string {

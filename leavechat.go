@@ -2,6 +2,8 @@ package go_telegram_bot_api
 
 import (
 	"encoding/json"
+
+	"github.com/GoLibs/telegram-bot-api/structs"
 )
 
 type leaveChat struct {
@@ -18,8 +20,7 @@ func (sv *leaveChat) marshalJSON() ([]byte, error) {
 }
 
 func (sv *leaveChat) response() interface{} {
-	var result bool
-	return &result
+	return structs.ResponseTypeBool()
 }
 
 func (sv *leaveChat) method() string {

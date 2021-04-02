@@ -2,6 +2,8 @@ package go_telegram_bot_api
 
 import (
 	"encoding/json"
+
+	"github.com/GoLibs/telegram-bot-api/structs"
 )
 
 type unpinChatMessage struct {
@@ -18,8 +20,7 @@ func (sv *unpinChatMessage) marshalJSON() ([]byte, error) {
 }
 
 func (sv *unpinChatMessage) response() interface{} {
-	var result bool
-	return &result
+	return structs.ResponseTypeBool()
 }
 
 func (sv *unpinChatMessage) method() string {

@@ -2,6 +2,8 @@ package go_telegram_bot_api
 
 import (
 	"encoding/json"
+
+	"github.com/GoLibs/telegram-bot-api/structs"
 )
 
 type deleteChatStickerSet struct {
@@ -18,8 +20,7 @@ func (sv *deleteChatStickerSet) marshalJSON() ([]byte, error) {
 }
 
 func (sv *deleteChatStickerSet) response() interface{} {
-	var result bool
-	return &result
+	return structs.ResponseTypeBool()
 }
 
 func (sv *deleteChatStickerSet) method() string {

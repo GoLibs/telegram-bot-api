@@ -1,8 +1,10 @@
 package go_telegram_bot_api
 
 import (
+	"encoding/json"
 	"fmt"
 	"math/rand"
+	"net/http"
 	"time"
 
 	"github.com/GoLibs/telegram-bot-api/tools"
@@ -20,6 +22,7 @@ type TelegramBot struct {
 	recipientChatId             int64
 	stopReceivingUpdatesChannel chan bool
 	stoppedReceivingUpdates     bool
+	updatesChannel              chan *structs.Update
 	client                      *resty.Client
 	Tools                       tools.Tools
 }
@@ -39,6 +42,13 @@ func NewTelegramBot(apiToken string) (tb *TelegramBot, err error) {
 	}
 	_, err = tb.GetMe()
 	return
+}
+
+func (tb *TelegramBot) SetAPIServerUrl(address string) {
+	if address[len(address)-1] == '/' {
+		address = address[:len(address)-1]
+	}
+	tb.client.SetHostURL(fmt.Sprintf("%s/bot%s/", address, tb.apiToken))
 }
 
 func (tb *TelegramBot) SetRecipientChatId(chatId int64) {
@@ -275,8 +285,34 @@ func (tb *TelegramBot) GetUpdates() (m *getUpdates) {
 	return
 }
 
+func (tb *TelegramBot) SetWebhook() (m *setWebhook) {
+	m = &setWebhook{parent: tb}
+	return
+}
+
 func (tb *TelegramBot) StopReceivingUpdates() {
 	close(tb.stopReceivingUpdatesChannel)
+}
+
+func (tb *TelegramBot) ListenWebhook(address string) (err error) {
+	tb.updatesChannel = make(chan *structs.Update)
+	http.HandleFunc(fmt.Sprintf("%s", tb.apiToken), func(writer http.ResponseWriter, request *http.Request) {
+		defer request.Body.Close()
+		var u *structs.Update
+		j := json.NewDecoder(request.Body)
+		err := j.Decode(&u)
+		if err != nil {
+			fmt.Println("error decoding update", err.Error())
+			return
+		}
+		tb.updatesChannel <- u
+	})
+	err = http.ListenAndServe(address, nil)
+	return
+}
+
+func (tb *TelegramBot) Updates() chan *structs.Update {
+	return tb.updatesChannel
 }
 
 func (tb *TelegramBot) GetUpdatesChannel(config *getUpdates) (channel structs.UpdatesChannel, err error) {

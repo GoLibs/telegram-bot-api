@@ -35,8 +35,7 @@ func (sv *addStickerToSet) marshalJSON() ([]byte, error) {
 }
 
 func (sv *addStickerToSet) response() interface{} {
-	var resp bool
-	return &resp
+	return structs.ResponseTypeBool()
 }
 
 func (sv *addStickerToSet) method() string {

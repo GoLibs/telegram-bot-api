@@ -2,6 +2,8 @@ package go_telegram_bot_api
 
 import (
 	"encoding/json"
+
+	"github.com/GoLibs/telegram-bot-api/structs"
 )
 
 type setChatStickerSet struct {
@@ -21,8 +23,7 @@ func (sv *setChatStickerSet) marshalJSON() ([]byte, error) {
 }
 
 func (sv *setChatStickerSet) response() interface{} {
-	var result bool
-	return &result
+	return structs.ResponseTypeBool()
 }
 
 func (sv *setChatStickerSet) method() string {
