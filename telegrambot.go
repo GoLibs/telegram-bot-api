@@ -302,6 +302,7 @@ func (tb *TelegramBot) ListenWebhook(address string) (err error) {
 		j := json.NewDecoder(request.Body)
 		err := j.Decode(&u)
 		if err != nil {
+			// commit
 			fmt.Println("error decoding update", err.Error())
 			return
 		}
