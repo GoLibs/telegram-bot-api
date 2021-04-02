@@ -306,6 +306,8 @@ func (tb *TelegramBot) ListenWebhook(address string) (err error) {
 			return
 		}
 		tb.updatesChannel <- u
+		writer.WriteHeader(http.StatusOK)
+		writer.Write([]byte("ok"))
 	})
 	err = http.ListenAndServe(address, nil)
 	return

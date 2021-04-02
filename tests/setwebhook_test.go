@@ -13,6 +13,7 @@ func TestSetWebhook(t *testing.T) {
 		fmt.Println(err)
 		return
 	}
+	bot.ListenWebhook("http://localhost:8082")
 	res, err := bot.SetWebhook().SetIPAddress("127.0.0.1").Set()
 	fmt.Println(res, err)
 }
