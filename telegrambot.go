@@ -297,7 +297,6 @@ func (tb *TelegramBot) StopReceivingUpdates() {
 func (tb *TelegramBot) ListenWebhook(address string) (err error) {
 	tb.updatesChannel = make(chan *structs.Update)
 	http.HandleFunc(fmt.Sprintf("/%s", tb.apiToken), func(writer http.ResponseWriter, request *http.Request) {
-		fmt.Println("new update")
 		defer request.Body.Close()
 		var u *structs.Update
 		j := json.NewDecoder(request.Body)
