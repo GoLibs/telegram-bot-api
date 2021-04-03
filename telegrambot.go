@@ -290,6 +290,11 @@ func (tb *TelegramBot) SetWebhook() (m *setWebhook) {
 	return
 }
 
+func (tb *TelegramBot) DeleteWebhook() (m *deleteWebhook) {
+	m = &deleteWebhook{parent: tb}
+	return
+}
+
 func (tb *TelegramBot) StopReceivingUpdates() {
 	close(tb.stopReceivingUpdatesChannel)
 }
