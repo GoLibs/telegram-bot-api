@@ -315,6 +315,7 @@ func (tb *TelegramBot) ListenWebhook(address string) (err error) {
 }
 
 func (tb *TelegramBot) Updates() chan *structs.Update {
+	// commit
 	return tb.updatesChannel
 }
 
