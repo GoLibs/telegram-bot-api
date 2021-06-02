@@ -28,7 +28,7 @@ type sendAudio struct {
 func (sph *sendAudio) marshalJSON() ([]byte, error) {
 	return json.Marshal(struct {
 		ChatId              interface{}  `json:"chat_id"`
-		Audio               interface{}  `json:"voice,omitempty"`
+		Audio               interface{}  `json:"audio,omitempty"`
 		Caption             string       `json:"caption,omitempty"`
 		ParseMode           string       `json:"parse_mode,omitempty"`
 		Duration            int64        `json:"duration,omitempty"`
