@@ -9,8 +9,6 @@ import (
 
 	"github.com/GoLibs/telegram-bot-api/tools"
 
-	"github.com/GoLibs/telegram-bot-api/responses"
-
 	"github.com/GoLibs/telegram-bot-api/structs"
 	"github.com/go-resty/resty/v2"
 )
@@ -22,7 +20,7 @@ type TelegramBot struct {
 	recipientChatId             int64
 	stopReceivingUpdatesChannel chan bool
 	stoppedReceivingUpdates     bool
-	updatesChannel              chan *structs.Update
+	updatesChannel              chan *Update
 	client                      *resty.Client
 	Tools                       tools.Tools
 }
@@ -300,10 +298,10 @@ func (tb *TelegramBot) StopReceivingUpdates() {
 }
 
 func (tb *TelegramBot) ListenWebhook(address string) (err error) {
-	tb.updatesChannel = make(chan *structs.Update)
+	tb.updatesChannel = make(chan *Update)
 	http.HandleFunc(fmt.Sprintf("/%s", tb.apiToken), func(writer http.ResponseWriter, request *http.Request) {
 		defer request.Body.Close()
-		var u *structs.Update
+		var u *Update
 		j := json.NewDecoder(request.Body)
 		err := j.Decode(&u)
 		if err != nil {
@@ -319,51 +317,19 @@ func (tb *TelegramBot) ListenWebhook(address string) (err error) {
 	return
 }
 
-func (tb *TelegramBot) Updates() chan *structs.Update {
+func (tb *TelegramBot) Updates() chan *Update {
 	// commit
 	return tb.updatesChannel
 }
 
-func (tb *TelegramBot) GetUpdatesChannel(config *getUpdates) (channel structs.UpdatesChannel, err error) {
-	if config == nil {
-		config = &getUpdates{}
-	}
-	ch := make(chan structs.Update, config.buffer)
-	tb.stopReceivingUpdatesChannel = make(chan bool)
-	go func() {
-		for {
-			select {
-			case <-tb.stopReceivingUpdatesChannel:
-				close(ch)
-				return
-			default:
-			}
-			result, err := (tb.GetUpdates()).Set(config).Get()
-			if err != nil {
-				fmt.Println(err)
-				time.Sleep(time.Second * 3)
-				continue
-			}
-
-			for _, update := range result.Updates {
-				if update.UpdateId >= config.Offset() {
-					config.SetOffset(update.UpdateId + 1)
-					ch <- update
-				}
-			}
-		}
-	}()
-
-	return ch, err
-}
-
-func (tb *TelegramBot) Send(config Config) (result *responses.Response, err error) {
+func (tb *TelegramBot) Send(config Config) (result *Response, err error) {
 	request := tb.client.R()
 	tb.prepareRequest(config, request)
 	res, err := request.Execute(config.method(), config.endpoint())
 	if err != nil {
 		return nil, err
 	}
-	result, err = tb.getMessageResponse(res, config)
+
+	result, _, err = tb.getMessageResponse(res, config)
 	return
 }

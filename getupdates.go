@@ -2,15 +2,10 @@ package go_telegram_bot_api
 
 import (
 	"encoding/json"
-
-	"github.com/GoLibs/telegram-bot-api/responses"
-
-	"github.com/GoLibs/telegram-bot-api/structs"
 )
 
 type getUpdates struct {
 	parent         *TelegramBot
-	buffer         int64
 	offset         int64
 	limit          int64
 	timeout        int64
@@ -35,10 +30,10 @@ func (gu *getUpdates) AllowedUpdates() []string {
 
 func (gu *getUpdates) marshalJSON() ([]byte, error) {
 	return json.Marshal(struct {
-		Offset         int64    `json:"offset"`
-		Limit          int64    `json:"limit"`
-		Timeout        int64    `json:"timeout"`
-		AllowedUpdates []string `json:"allowed_updates"`
+		Offset         int64    `json:"offset,omitempty"`
+		Limit          int64    `json:"limit,omitempty"`
+		Timeout        int64    `json:"timeout,omitempty"`
+		AllowedUpdates []string `json:"allowed_updates,omitempty"`
 	}{
 		Offset:         gu.offset,
 		Limit:          gu.limit,
@@ -48,7 +43,7 @@ func (gu *getUpdates) marshalJSON() ([]byte, error) {
 }
 
 func (gu *getUpdates) response() interface{} {
-	return &[]structs.Update{}
+	return &[]Update{}
 }
 
 func (gu *getUpdates) method() string {
@@ -57,19 +52,6 @@ func (gu *getUpdates) method() string {
 
 func (gu *getUpdates) endpoint() string {
 	return "getUpdates"
-}
-
-func (gu *getUpdates) SetBuffer(buffer int64) *getUpdates {
-	gu.buffer = buffer
-	return gu
-}
-
-func (gu *getUpdates) Set(updates *getUpdates) *getUpdates {
-	gu.offset = updates.offset
-	gu.limit = updates.limit
-	gu.allowedUpdates = updates.allowedUpdates
-	gu.timeout = updates.timeout
-	return gu
 }
 
 func (gu *getUpdates) SetOffset(offset int64) *getUpdates {
@@ -92,7 +74,28 @@ func (gu *getUpdates) SetAllowedUpdates(allowed []string) *getUpdates {
 	return gu
 }
 
-func (gu *getUpdates) Get() (result *responses.Response, err error) {
+func (gu *getUpdates) Get() (result *Response, err error) {
 	result, err = gu.parent.Send(gu)
 	return
+}
+
+func (gu *getUpdates) LongPoll() (updateChannel chan *Update) {
+	updateChannel = make(chan *Update)
+	go gu.pollUpdates(updateChannel)
+	return
+}
+
+func (gu *getUpdates) pollUpdates(updateChannel chan *Update) {
+	for true {
+		resp, err := gu.parent.Send(gu)
+		if err != nil {
+			updateChannel <- newUpdateError(err)
+			return
+		}
+		var update Update
+		for _, update = range resp.Updates {
+			updateChannel <- &update
+		}
+		gu.SetOffset(update.UpdateId + 1)
+	}
 }

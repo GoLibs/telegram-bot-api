@@ -1,9 +1,11 @@
 package go_telegram_bot_api
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"math/rand"
 	"strconv"
 
@@ -62,12 +64,17 @@ func (tb *TelegramBot) getFormData(config Config) (fd map[string]string) {
 	return
 }
 
-func (tb TelegramBot) getMessageResponse(resp *resty.Response, config Config) (response *responses.Response, err error) {
+func (tb TelegramBot) getMessageResponse(resp *resty.Response, config Config) (response *Response, raw []byte, err error) {
 	defer resp.RawBody().Close()
-	j := json.NewDecoder(resp.RawBody())
-	response = &responses.Response{}
+	raw, err = ioutil.ReadAll(resp.RawBody())
+	if err != nil {
+		return
+	}
+	j := json.NewDecoder(bytes.NewReader(raw))
+	response = &Response{}
 	err = j.Decode(response)
 	if err != nil {
+		resp.RawBody()
 		return
 	}
 	if !response.Ok {
@@ -86,8 +93,8 @@ func (tb TelegramBot) getMessageResponse(resp *resty.Response, config Config) (r
 	case *[]structs.Message:
 		messages := responseVar.(*[]structs.Message)
 		response.Messages = *messages
-	case *[]structs.Update:
-		updates := responseVar.(*[]structs.Update)
+	case *[]Update:
+		updates := responseVar.(*[]Update)
 		response.Updates = *updates
 	case *[]structs.ChatMember:
 		updates := responseVar.(*[]structs.ChatMember)

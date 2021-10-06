@@ -221,7 +221,7 @@ func (sd *sendMediaGroup) Send() (messages []structs.Message, err error) {
 	if err != nil {
 		return nil, err
 	}
-	result, err := sd.parent.getMessageResponse(resp, sd)
+	result, _, err := sd.parent.getMessageResponse(resp, sd)
 	if err != nil {
 		return
 	}

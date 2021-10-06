@@ -3,8 +3,6 @@ package go_telegram_bot_api
 import (
 	"encoding/json"
 
-	"github.com/GoLibs/telegram-bot-api/responses"
-
 	"github.com/GoLibs/telegram-bot-api/structs"
 )
 
@@ -68,7 +66,7 @@ func (sw *setWebhook) endpoint() string {
 }
 
 func (sw *setWebhook) Set() (res bool, err error) {
-	var result *responses.Response
+	var result *Response
 	result, err = sw.parent.Send(sw)
 	if err != nil {
 		return

@@ -1,4 +1,4 @@
-package responses
+package go_telegram_bot_api
 
 import (
 	"encoding/json"
@@ -16,7 +16,7 @@ type Response struct {
 	Message           *structs.Message           `json:"-"`
 	Messages          []structs.Message          `json:"-"`
 	UserProfilePhotos *structs.UserProfilePhotos `json:"-"`
-	Updates           []structs.Update           `json:"-"`
+	Updates           []Update                   `json:"-"`
 	ChatMembers       []structs.ChatMember       `json:"-"`
 	ChatMember        *structs.ChatMember        `json:"-"`
 	Chat              *structs.Chat              `json:"-"`
