@@ -221,6 +221,11 @@ func (tb *TelegramBot) KickChatMember() (m *kickChatMember) {
 	return
 }
 
+func (tb *TelegramBot) AnswerCallbackQuery() (m *answerCallbackQuery) {
+	m = &answerCallbackQuery{parent: tb}
+	return
+}
+
 func (tb *TelegramBot) PromoteChatMember() (m *promoteChatMember) {
 	m = &promoteChatMember{parent: tb}
 	return
