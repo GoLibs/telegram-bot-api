@@ -17,9 +17,10 @@ type Update struct {
 	ChatMember    *structs.ChatMemberUpdated `json:"chat_member,omitempty"`
 	// ShippingQuery      ShippingQuery      `json:"shipping_query"`
 	// PreCheckoutQuery   PreCheckoutQuery   `json:"pre_checkout_query"`
-	Poll *structs.Poll `json:"poll,omitempty"`
-	err  error
-	raw  []byte
+	Poll       *structs.Poll       `json:"poll,omitempty"`
+	PollAnswer *structs.PollAnswer `json:"poll_answer,omitempty"`
+	err        error
+	raw        []byte
 	// PollAnswer         PollAnswer         `json:"poll_answer"`
 }
 
