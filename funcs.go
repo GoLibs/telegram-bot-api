@@ -109,6 +109,8 @@ func (tb TelegramBot) getMessageResponse(resp *resty.Response, config Config) (r
 		response.File = responseVar.(*structs.File)
 	case *structs.Chat:
 		response.Chat = responseVar.(*structs.Chat)
+	case *structs.User:
+		response.User = responseVar.(*structs.User)
 	case *structs.StickerSet:
 		response.StickerSet = responseVar.(*structs.StickerSet)
 	case *structs.MessageId:

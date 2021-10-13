@@ -43,7 +43,7 @@ func (sv *getFile) response() interface{} {
 		if err != nil {
 			return err
 		}
-		fmt.Println(resp)
+
 		_, err = f.Write(b)
 		if err != nil {
 			return err

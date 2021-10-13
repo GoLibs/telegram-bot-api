@@ -2,6 +2,7 @@ package go_telegram_bot_api
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math/rand"
 	"net/http"
@@ -9,7 +10,6 @@ import (
 
 	"github.com/GoLibs/telegram-bot-api/tools"
 
-	"github.com/GoLibs/telegram-bot-api/structs"
 	"github.com/go-resty/resty/v2"
 )
 
@@ -31,14 +31,22 @@ func NewTelegramBot(apiToken string) (tb *TelegramBot, err error) {
 	client := resty.New()
 	client.SetHostURL(address)
 	client.SetDoNotParseResponse(true)
-	tb = &TelegramBot{
+	bot := &TelegramBot{
 		apiToken:                    apiToken,
 		apiUrl:                      address,
 		stopReceivingUpdatesChannel: nil,
 		client:                      client,
 		Tools:                       tools.Tools{},
 	}
-	_, err = tb.GetMe()
+	var resp *Response
+	resp, err = bot.Send(bot.GetMe())
+	if err != nil {
+		return
+	}
+	if resp.User == nil {
+		err = errors.New("empty_user_response")
+	}
+	tb = bot
 	return
 }
 
@@ -53,17 +61,8 @@ func (tb *TelegramBot) SetRecipientChatId(chatId int64) {
 	tb.recipientChatId = chatId
 }
 
-func (tb *TelegramBot) GetMe() (user *structs.User, err error) {
-	var r *resty.Response
-	r, err = tb.client.R().Get("getMe")
-	if err != nil {
-		return nil, err
-	}
-	// resp, err := tb.getMessageResponse(r)
-	if err != nil {
-		return nil, err
-	}
-	fmt.Println(r)
+func (tb *TelegramBot) GetMe() (m *getMe) {
+	m = &getMe{parent: tb}
 	return
 }
 
