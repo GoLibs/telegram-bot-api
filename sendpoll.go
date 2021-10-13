@@ -27,7 +27,7 @@ func (sv *sendPoll) marshalJSON() ([]byte, error) {
 		ChatId                interface{}  `json:"chat_id"`
 		Question              string       `json:"question"`
 		Options               []string     `json:"options"`
-		IsAnonymous           bool         `json:"is_anonymous,omitempty"`
+		IsAnonymous           bool         `json:"is_anonymous"`
 		PollType              string       `json:"type,omitempty"`
 		AllowsMultipleAnswers bool         `json:"allows_multiple_answers,omitempty"`
 		CorrectOptionId       int64        `json:"correct_option_id,omitempty"`
