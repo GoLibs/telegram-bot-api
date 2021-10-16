@@ -22,21 +22,21 @@ func (w *webhook) SetPath(pathUrl string) *webhook {
 	return w
 }
 
-func (w *webhook) Listen() (updatesChannel chan *Update) {
+func (w *webhook) Listen() (updatesChannel chan Update) {
 	if w.path == "" {
 		w.path = "/"
 	}
-	updatesChannel = make(chan *Update)
+	updatesChannel = make(chan Update)
 	go w.listen(updatesChannel)
 	return
 }
 
-func (w *webhook) listen(updatesChannel chan *Update) (err error) {
+func (w *webhook) listen(updatesChannel chan Update) (err error) {
 	handler := http.NewServeMux()
 	handler.HandleFunc(w.path, func(writer http.ResponseWriter, request *http.Request) {
 		writer.WriteHeader(http.StatusOK)
 		var (
-			update  *Update
+			update  Update
 			data    []byte
 			dataErr error
 		)
