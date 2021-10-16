@@ -24,8 +24,8 @@ type Update struct {
 	// PollAnswer         PollAnswer         `json:"poll_answer"`
 }
 
-func newUpdateError(err error) *Update {
-	return &Update{err: err}
+func newUpdateError(err error) Update {
+	return Update{err: err}
 }
 
 func (u *Update) Error() error {
