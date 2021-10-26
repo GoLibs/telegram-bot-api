@@ -14,6 +14,18 @@ func (ikm InlineKeyboardMarkup) MarshalJSON() ([]byte, error) {
 	})
 }
 
+func (ikm *InlineKeyboardMarkup) UnmarshalJSON(data []byte) (err error) {
+	object := struct {
+		InlineKeyboard []*InlineKeyboardButtons `json:"inline_keyboard"`
+	}{}
+	err = json.Unmarshal(data, &object)
+	if err != nil {
+		return
+	}
+	*ikm = InlineKeyboardMarkup{inlineKeyboard: object.InlineKeyboard}
+	return
+}
+
 func (ikm *InlineKeyboardMarkup) NewRow() (row *InlineKeyboardButtons) {
 	row = &InlineKeyboardButtons{}
 	if ikm.inlineKeyboard == nil {
