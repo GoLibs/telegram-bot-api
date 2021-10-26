@@ -16,7 +16,7 @@ func (ikm InlineKeyboardMarkup) MarshalJSON() ([]byte, error) {
 
 func (ikm *InlineKeyboardMarkup) UnmarshalJSON(data []byte) (err error) {
 	object := struct {
-		InlineKeyboard []*InlineKeyboardButtons `json:"inline_keyboard"`
+		InlineKeyboard []*InlineKeyboardButtons `json:"inline_keyboard,omitempty"`
 	}{}
 	err = json.Unmarshal(data, &object)
 	if err != nil {
