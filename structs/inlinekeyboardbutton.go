@@ -35,6 +35,34 @@ func (i InlineKeyboardButton) MarshalJSON() ([]byte, error) {
 	})
 }
 
+func (i *InlineKeyboardButton) UnmarshalJSON(data []byte) (err error) {
+	object := struct {
+		Text                         string      `json:"text"`
+		Url                          string      `json:"url"`
+		LoginUrl                     LoginUrl    `json:"login_url"`
+		CallbackData                 string      `json:"callback_data"`
+		SwitchInlineQuery            string      `json:"switch_inline_query"`
+		SwitchInlineQueryCurrentChat string      `json:"switch_inline_query_current_chat"`
+		CallbackGame                 interface{} `json:"callback_game"`
+		Pay                          bool        `json:"pay"`
+	}{}
+	err = json.Unmarshal(data, &object)
+	if err == nil {
+		button := InlineKeyboardButton{
+			text:                         object.Text,
+			url:                          object.Url,
+			loginUrl:                     object.LoginUrl,
+			callbackData:                 object.CallbackData,
+			switchInlineQuery:            object.SwitchInlineQuery,
+			switchInlineQueryCurrentChat: object.SwitchInlineQueryCurrentChat,
+			callbackGame:                 object.CallbackGame,
+			pay:                          object.Pay,
+		}
+		*i = button
+	}
+	return
+}
+
 func (i *InlineKeyboardButton) SetText(text string) {
 	(*i).text = text
 }
