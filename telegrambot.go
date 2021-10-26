@@ -66,6 +66,14 @@ func (tb *TelegramBot) GetMe() (m *getMe) {
 	return
 }
 
+func (tb *TelegramBot) DeleteMessage() (m *deleteMessage) {
+	m = &deleteMessage{parent: tb}
+	if tb.recipientChatId != 0 {
+		m.SetChatId(tb.recipientChatId)
+	}
+	return
+}
+
 func (tb *TelegramBot) Message() (m *sendMessage) {
 	m = &sendMessage{parent: tb}
 	if tb.recipientChatId != 0 {
