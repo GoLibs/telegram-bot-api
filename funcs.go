@@ -9,8 +9,8 @@ import (
 	"math/rand"
 	"strconv"
 
-	"github.com/GoLibs/telegram-bot-api/responses"
-	"github.com/GoLibs/telegram-bot-api/structs"
+	"github.com/aliforever/go-telegram-bot-api/responses"
+	"github.com/aliforever/go-telegram-bot-api/structs"
 	"github.com/go-resty/resty/v2"
 )
 

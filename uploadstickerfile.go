@@ -5,7 +5,7 @@ import (
 	"io"
 	"time"
 
-	"github.com/GoLibs/telegram-bot-api/structs"
+	"github.com/aliforever/go-telegram-bot-api/structs"
 )
 
 type uploadStickerFile struct {

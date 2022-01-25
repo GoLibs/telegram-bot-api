@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/GoLibs/telegram-bot-api/tools"
+	"github.com/aliforever/go-telegram-bot-api/tools"
 
 	"github.com/go-resty/resty/v2"
 )

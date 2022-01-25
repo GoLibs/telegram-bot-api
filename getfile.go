@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/GoLibs/telegram-bot-api/structs"
+	"github.com/aliforever/go-telegram-bot-api/structs"
 )
 
 type getFile struct {

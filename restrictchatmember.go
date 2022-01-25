@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/GoLibs/telegram-bot-api/structs"
+	"github.com/aliforever/go-telegram-bot-api/structs"
 )
 
 type restrictChatMember struct {
