@@ -6,11 +6,11 @@ import (
 
 	"github.com/kr/pretty"
 
-	go_telegram_bot_api "github.com/GoLibs/telegram-bot-api"
+	"github.com/aliforever/go-telegram-bot-api"
 )
 
 func TestUnbanChatMember(t *testing.T) {
-	bot, err := go_telegram_bot_api.NewTelegramBot("796493295:AAE3EGLAnba_XAsp_ts3sbPTHpW3nitBc4s")
+	bot, err := tgbotapi.NewTelegramBot("796493295:AAE3EGLAnba_XAsp_ts3sbPTHpW3nitBc4s")
 	if err != nil {
 		fmt.Println(err)
 		return

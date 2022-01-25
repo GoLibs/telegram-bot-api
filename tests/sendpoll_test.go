@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"testing"
 
-	go_telegram_bot_api "github.com/GoLibs/telegram-bot-api"
+	"github.com/aliforever/go-telegram-bot-api"
 )
 
 func TestSendPoll(t *testing.T) {
-	bot, err := go_telegram_bot_api.NewTelegramBot(Tests{}.Defaults().BotToken)
+	bot, err := tgbotapi.NewTelegramBot(Tests{}.Defaults().BotToken)
 	if err != nil {
 		fmt.Println(err)
 		return

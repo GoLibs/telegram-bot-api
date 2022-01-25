@@ -6,19 +6,19 @@ import (
 
 	"github.com/kr/pretty"
 
-	go_telegram_bot_api "github.com/GoLibs/telegram-bot-api"
+	"github.com/aliforever/go-telegram-bot-api"
 )
 
 func TestKeyboards(t *testing.T) {
 	/**/
-	bot, err := go_telegram_bot_api.NewTelegramBot(Tests{}.Defaults().BotToken)
+	bot, err := tgbotapi.NewTelegramBot(Tests{}.Defaults().BotToken)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
 	/* Inline Keyboard Test */
-	keyboard := go_telegram_bot_api.TelegramBot{}.Tools.Keyboards.NewInlineKeyboard()
+	keyboard := tgbotapi.TelegramBot{}.Tools.Keyboards.NewInlineKeyboard()
 	row := (*keyboard).NewRow()
 	row.AddCallbackButton("hello", "set_hello")
 	message := (bot.Message()).SetChatId(Tests{}.Defaults().UserId).SetText("good idea").SetReplyMarkup(keyboard)
@@ -28,7 +28,7 @@ func TestKeyboards(t *testing.T) {
 		return
 	}
 	pretty.Println(m)
-	keyboard = go_telegram_bot_api.TelegramBot{}.Tools.Keyboards.NewInlineKeyboardFromSlicesOfMaps([][]map[string]string{
+	keyboard = tgbotapi.TelegramBot{}.Tools.Keyboards.NewInlineKeyboardFromSlicesOfMaps([][]map[string]string{
 		{
 			{
 				"text":          "hello",

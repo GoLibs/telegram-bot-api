@@ -1,7 +1,7 @@
 package tests
 
 // func TestGetUpdates(t *testing.T) {
-// 	bot, err := go_telegram_bot_api.NewTelegramBot("796493295:AAE3EGLAnba_XAsp_ts3sbPTHpW3nitBc4s")
+// 	bot, err := tgbotapi.NewTelegramBot("796493295:AAE3EGLAnba_XAsp_ts3sbPTHpW3nitBc4s")
 // 	if err != nil {
 // 		fmt.Println(err)
 // 		return
