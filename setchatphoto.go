@@ -1,4 +1,4 @@
-package go_telegram_bot_api
+package tgbotapi
 
 import (
 	"encoding/json"

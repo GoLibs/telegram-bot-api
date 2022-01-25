@@ -1,6 +1,6 @@
-module github.com/GoLibs/telegram-bot-api
+module github.com/aliforever/go-telegram-bot-api
 
-go 1.14
+go 1.17
 
 require (
 	github.com/go-resty/resty/v2 v2.5.0
