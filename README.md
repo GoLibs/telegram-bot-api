@@ -1,7 +1,7 @@
 # Go-Telegram-Bot-API
 
 ## Download
-`go get -u github.com/aliforever/go-telegram-bot-api.git`
+`go get -u github.com/aliforever/go-telegram-bot-api`
 
 ## Import
 `import "github.com/aliforever/go-telegram-bot-api"`
