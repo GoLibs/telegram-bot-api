@@ -9,4 +9,5 @@ type Audio struct {
 	MimeType     string    `json:"mime_type"`
 	FileSize     int64     `json:"file_size"`
 	Thumb        PhotoSize `json:"thumb"`
+	FileName     string    `json:"file_name"`
 }

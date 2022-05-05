@@ -9,4 +9,5 @@ type Video struct {
 	Thumb        PhotoSize `json:"thumb"`
 	MimeType     string    `json:"mime_type"`
 	FileSize     int64     `json:"file_size"`
+	FileName     string    `json:"file_name"`
 }
