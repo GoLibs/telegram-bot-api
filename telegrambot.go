@@ -98,6 +98,14 @@ func (tb *TelegramBot) EditMessageText() (m *editMessageText) {
 	return
 }
 
+func (tb *TelegramBot) EditMessageReplyMarkup() (m *editMessageReplyMarkup) {
+	m = &editMessageReplyMarkup{parent: tb}
+	if tb.recipientChatId != 0 {
+		m.SetChatId(tb.recipientChatId)
+	}
+	return
+}
+
 func (tb *TelegramBot) ForwardMessage() (m *forwardMessage) {
 	m = &forwardMessage{parent: tb}
 	if tb.recipientChatId != 0 {
