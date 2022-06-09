@@ -57,8 +57,8 @@ func (u *Update) From() (user *structs.User) {
 	return
 }
 
-func (u *Update) MessageText() string {
-	if u.Message != nil && u.Message.Text != "" {
+func (u *Update) PrivateMessageText() string {
+	if u.Message != nil && u.Message.IsPrivate() && u.Message.Text != "" {
 		return u.Message.Text
 	}
 
