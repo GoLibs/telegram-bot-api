@@ -56,3 +56,11 @@ func (u *Update) From() (user *structs.User) {
 	// TODO: Add More Cases
 	return
 }
+
+func (u *Update) MessageText() string {
+	if u.Message != nil && u.Message.Text != "" {
+		return u.Message.Text
+	}
+
+	return ""
+}
