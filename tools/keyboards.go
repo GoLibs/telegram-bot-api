@@ -14,5 +14,5 @@ func (k Keyboards) NewInlineKeyboardFromSlicesOfMaps(slicesOfMaps [][]map[string
 }
 
 func (k Keyboards) NewReplyKeyboardFromSlicesOfStrings(slicesOfStrings [][]string) *structs.ReplyKeyboardMarkup {
-	return (&structs.ReplyKeyboardMarkup{}).FromSlicesOfStrings(slicesOfStrings)
+	return (&structs.ReplyKeyboardMarkup{}).FromSlicesOfStrings(slicesOfStrings).SetResizeKeyboard(true)
 }
