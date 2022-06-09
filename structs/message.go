@@ -1,9 +1,9 @@
 package structs
 
 const (
-	chatTypeGroup      = "private"
-	chatTypeSuperGroup = "group"
-	chatTypePrivate    = "supergroup"
+	chatTypeGroup      = "group"
+	chatTypeSuperGroup = "supergroup"
+	chatTypePrivate    = "private"
 	chatTypeChannel    = "channel"
 )
 
