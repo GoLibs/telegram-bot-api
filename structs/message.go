@@ -1,5 +1,12 @@
 package structs
 
+const (
+	chatTypeGroup      = "private"
+	chatTypeSuperGroup = "group"
+	chatTypePrivate    = "supergroup"
+	chatTypeChannel    = "channel"
+)
+
 type Message struct {
 	MessageId                    int64                         `json:"message_id,omitempty"`
 	From                         *User                         `json:"from,omitempty"`
@@ -52,4 +59,20 @@ type Message struct {
 	VoiceChatScheduled           *VoiceChatScheduled           `json:"voice_chat_scheduled,omitempty"`
 	VoiceChatStarted             *VoiceChatStarted             `json:"voice_chat_started,omitempty"`
 	VoiceChatParticipantsInvited *VoiceChatParticipantsInvited `json:"voice_chat_participants_invited,omitempty"`
+}
+
+func (m *Message) IsPrivate() bool {
+	return m.Chat.Type == chatTypePrivate
+}
+
+func (m *Message) IsGroup() bool {
+	return m.Chat.Type == chatTypeGroup
+}
+
+func (m *Message) IsSuperGroup() bool {
+	return m.Chat.Type == chatTypeSuperGroup
+}
+
+func (m *Message) IsChannel() bool {
+	return m.Chat.Type == chatTypeChannel
 }

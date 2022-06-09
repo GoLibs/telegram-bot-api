@@ -31,6 +31,28 @@ func newUpdateError(err error) Update {
 func (u *Update) Error() error {
 	return u.err
 }
+
 func (u *Update) Raw() []byte {
 	return u.raw
+}
+
+func (u *Update) From() (user *structs.User) {
+	if u.Message != nil {
+		if u.Message.From != nil {
+			return u.Message.From
+		}
+	}
+	if u.EditedMessage != nil {
+		if u.EditedMessage.From != nil {
+			return u.EditedMessage.From
+		}
+	}
+	if u.CallbackQuery != nil {
+		if u.CallbackQuery.From != nil {
+			return u.CallbackQuery.From
+		}
+	}
+
+	// TODO: Add More Cases
+	return
 }
