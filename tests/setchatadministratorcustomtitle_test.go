@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/kr/pretty"
-
 	"github.com/aliforever/go-telegram-bot-api"
 )
 
@@ -21,7 +19,7 @@ func TestSetChatAdministratorCustomTitle(t *testing.T) {
 		fmt.Println(err)
 		return
 	}
-	pretty.Println(messages, string(messages.Result))
+	fmt.Println(messages, string(messages.Result))
 	/*m, err := bot.Send(message)
 	if err != nil {
 		fmt.Println(err)

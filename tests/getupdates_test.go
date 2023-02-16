@@ -17,14 +17,14 @@ package tests
 // 		bot.Send(m)
 //
 // 		if update.Message.Video != nil {
-// 			pretty.Println(update.Message.Video)
+// 			fmt.Println(update.Message.Video)
 // 			file := (bot.File()).SetFileId(update.Message.Video.FileId)
 // 			res, err := bot.Send(file)
 // 			if err != nil {
 // 				fmt.Println(err)
 // 				return
 // 			}
-// 			pretty.Println(res)
+// 			fmt.Println(res)
 // 			return
 // 		}
 // 		bot.StopReceivingUpdates()

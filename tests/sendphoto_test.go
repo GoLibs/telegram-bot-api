@@ -21,7 +21,7 @@ func TestSendPhoto(t *testing.T) {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(*m.Message.Photo)
+	fmt.Println(m.Message.Photo)
 	p = bot.Photo()
 	p.SetChatId(Tests{}.Defaults().UserId).SetPhotoId("AgACAgQAAxkDAAECEwABXmFrWnTrgqevA4ChsqXoj0HaF7IAAhG0MRslnRFTNiO5tAeBc9FlP6gbAAQBAAMCAANtAAMZyQgAARgE")
 	m, err = bot.Send(p)
@@ -29,5 +29,5 @@ func TestSendPhoto(t *testing.T) {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(*m.Message.Photo)
+	fmt.Println(m.Message.Photo)
 }

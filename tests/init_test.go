@@ -13,10 +13,7 @@ func TestInit(t *testing.T) {
 		fmt.Println(err)
 		return
 	}
-	me, err := bot.GetMe()
-	if err != nil {
-		fmt.Println(err, "here")
-		return
-	}
+	me := bot.GetMe()
+
 	fmt.Println(me, "here 2")
 }

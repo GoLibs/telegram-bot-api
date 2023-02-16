@@ -23,6 +23,7 @@ type TelegramBot struct {
 	updatesChannel              chan *Update
 	client                      *resty.Client
 	Tools                       tools.Tools
+	logger                      resty.Logger
 }
 
 func NewTelegramBot(apiToken string) (tb *TelegramBot, err error) {
@@ -37,6 +38,32 @@ func NewTelegramBot(apiToken string) (tb *TelegramBot, err error) {
 		stopReceivingUpdatesChannel: nil,
 		client:                      client,
 		Tools:                       tools.Tools{},
+	}
+	var resp *Response
+	resp, err = bot.Send(bot.GetMe())
+	if err != nil {
+		return
+	}
+	if resp.User == nil {
+		err = errors.New("empty_user_response")
+	}
+	tb = bot
+	return
+}
+
+func NewTelegramBotWithLogger(apiToken string, logger resty.Logger) (tb *TelegramBot, err error) {
+	rand.Seed(time.Now().UnixNano())
+	address := fmt.Sprintf(`https://api.telegram.org/bot%s/`, apiToken)
+	client := resty.New()
+	client.SetHostURL(address)
+	client.SetDoNotParseResponse(true)
+	bot := &TelegramBot{
+		apiToken:                    apiToken,
+		apiUrl:                      address,
+		stopReceivingUpdatesChannel: nil,
+		client:                      client,
+		Tools:                       tools.Tools{},
+		logger:                      logger,
 	}
 	var resp *Response
 	resp, err = bot.Send(bot.GetMe())
@@ -344,12 +371,61 @@ func (tb *TelegramBot) Updates() chan *Update {
 
 func (tb *TelegramBot) Send(config Config) (result *Response, err error) {
 	request := tb.client.R()
-	tb.prepareRequest(config, request)
+
+	err = tb.prepareRequest(config, request)
+	if err != nil {
+		return nil, err
+	}
+
 	res, err := request.Execute(config.method(), config.endpoint())
 	if err != nil {
 		return nil, err
 	}
 
-	result, _, err = tb.getMessageResponse(res, config)
+	var raw []byte
+	result, raw, err = tb.getMessageResponse(res, config)
+	if err != nil {
+		tb.logErrBytes(raw, err)
+		return nil, err
+	}
+
 	return
+}
+
+func (tb *TelegramBot) SendWithOptions(config Config, options *SendOptions) (result *Response, err error) {
+	client := tb.client
+
+	if options != nil {
+		if options.timeout != 0 {
+			newClient := *client
+			client = newClient.SetTimeout(options.timeout)
+		}
+	}
+
+	request := client.R()
+
+	err = tb.prepareRequest(config, request)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := request.Execute(config.method(), config.endpoint())
+	if err != nil {
+		return nil, err
+	}
+
+	var raw []byte
+	result, raw, err = tb.getMessageResponse(res, config)
+	if err != nil {
+		tb.logErrBytes(raw, err)
+		return nil, err
+	}
+
+	return
+}
+
+func (tb *TelegramBot) logErrBytes(rawBytes []byte, err error) {
+	if tb.logger != nil {
+		tb.logger.Errorf("%s : %s", err, string(rawBytes))
+	}
 }

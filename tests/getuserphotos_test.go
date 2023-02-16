@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/kr/pretty"
-
 	"github.com/aliforever/go-telegram-bot-api"
 )
 
@@ -21,5 +19,5 @@ func TestGetUserPhotos(t *testing.T) {
 		fmt.Println(err)
 		return
 	}
-	pretty.Println(resp.UserProfilePhotos)
+	fmt.Println(resp.UserProfilePhotos)
 }

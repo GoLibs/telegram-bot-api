@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/kr/pretty"
-
 	"github.com/aliforever/go-telegram-bot-api"
 )
 
@@ -27,7 +25,7 @@ func TestKeyboards(t *testing.T) {
 		fmt.Println(err, "err")
 		return
 	}
-	pretty.Println(m)
+	fmt.Println(m)
 	keyboard = tgbotapi.TelegramBot{}.Tools.Keyboards.NewInlineKeyboardFromSlicesOfMaps([][]map[string]string{
 		{
 			{
@@ -42,7 +40,7 @@ func TestKeyboards(t *testing.T) {
 		fmt.Println(err, "err")
 		return
 	}
-	pretty.Println(m)
+	fmt.Println(m)
 	/* Reply Keyboard Test */
 	message.SetReplyMarkup(bot.Tools.Keyboards.NewReplyKeyboardFromSlicesOfStrings([][]string{
 		{"Hello Boy", "Buy"},
@@ -55,5 +53,5 @@ func TestKeyboards(t *testing.T) {
 		fmt.Println(err, "err")
 		return
 	}
-	pretty.Println(m)
+	fmt.Println(m)
 }

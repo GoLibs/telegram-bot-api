@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/kr/pretty"
-
 	"github.com/aliforever/go-telegram-bot-api"
 )
 
@@ -23,5 +21,5 @@ func TestSendMessage(t *testing.T) {
 		fmt.Println(err, "err")
 		return
 	}
-	pretty.Println(m)
+	fmt.Println(m)
 }

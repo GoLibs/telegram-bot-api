@@ -24,4 +24,5 @@ type Response struct {
 	File              *structs.File              `json:"-"`
 	StickerSet        *structs.StickerSet        `json:"-"`
 	MessageId         *structs.MessageId         `json:"-"`
+	Raw               []byte                     `json:"-"`
 }

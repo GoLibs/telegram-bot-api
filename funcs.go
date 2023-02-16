@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"math/rand"
 	"strconv"
 
@@ -14,7 +14,7 @@ import (
 	"github.com/go-resty/resty/v2"
 )
 
-func (tb *TelegramBot) prepareRequest(config Config, request *resty.Request) {
+func (tb *TelegramBot) prepareRequest(config Config, request *resty.Request) error {
 	if val, isFile := config.(file); isFile && len(val.medias()) != 0 {
 		for _, info := range val.medias() {
 			if info.Reader != nil {
@@ -26,9 +26,15 @@ func (tb *TelegramBot) prepareRequest(config Config, request *resty.Request) {
 		request.SetFormData(tb.getFormData(config))
 	} else {
 		request.SetHeader("Content-Type", "application/json")
-		body, _ := config.marshalJSON()
+		body, err := config.marshalJSON()
+		if err != nil {
+			return err
+		}
+
 		request = request.SetBody(string(body))
 	}
+
+	return nil
 }
 
 func (tb *TelegramBot) getFormData(config Config) (fd map[string]string) {
@@ -64,19 +70,21 @@ func (tb *TelegramBot) getFormData(config Config) (fd map[string]string) {
 	return
 }
 
-func (tb TelegramBot) getMessageResponse(resp *resty.Response, config Config) (response *Response, raw []byte, err error) {
+func (tb *TelegramBot) getMessageResponse(resp *resty.Response, config Config) (response *Response, raw []byte, err error) {
 	defer resp.RawBody().Close()
-	raw, err = ioutil.ReadAll(resp.RawBody())
+
+	raw, err = io.ReadAll(resp.RawBody())
 	if err != nil {
 		return
 	}
-	j := json.NewDecoder(bytes.NewReader(raw))
+
 	response = &Response{}
-	err = j.Decode(response)
+
+	err = json.NewDecoder(bytes.NewReader(raw)).Decode(response)
 	if err != nil {
-		resp.RawBody()
 		return
 	}
+
 	if !response.Ok {
 		err = responses.Error{
 			ErrorCode:   response.ErrorCode,
@@ -87,7 +95,11 @@ func (tb TelegramBot) getMessageResponse(resp *resty.Response, config Config) (r
 	}
 
 	var responseVar = config.response()
-	json.Unmarshal(response.Result, &responseVar)
+	err = json.Unmarshal(response.Result, &responseVar)
+	if err != nil {
+		return nil, raw, err
+	}
+
 	// fmt.Println(fmt.Sprintf("%T\n%T\n%s", response.Result, responseVar, string(response.Result)))
 	switch responseVar.(type) {
 	case *[]structs.Message:

@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/kr/pretty"
-
 	"github.com/aliforever/go-telegram-bot-api"
 )
 
@@ -25,5 +23,5 @@ func TestRestrictChatMember(t *testing.T) {
 		fmt.Println("disallowed")
 		return
 	}
-	pretty.Println(resp.Ok, resp.Message)
+	fmt.Println(resp.Ok, resp.Message)
 }

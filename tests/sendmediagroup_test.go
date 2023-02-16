@@ -20,7 +20,7 @@ func TestSendMediaGroup(t *testing.T) {
 		fmt.Println(err)
 		return
 	}
-	pretty.Println(messages, string(messages.Result))*/
+	fmt.Println(messages, string(messages.Result))*/
 	/*m, err := bot.Send(message)
 	if err != nil {
 		fmt.Println(err)

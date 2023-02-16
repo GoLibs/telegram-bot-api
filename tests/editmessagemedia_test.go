@@ -28,7 +28,7 @@ func TestEditMessageMedia(t *testing.T) {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(*m.Message.Photo)
+	fmt.Println(m.Message.Photo)
 
 	messageVideo := (bot.Video()).SetChatId(Tests{}.Defaults().UserId).SetCaption("Love").SetVideoFilePath("video.mkv")
 	m, err = bot.Send(messageVideo)
