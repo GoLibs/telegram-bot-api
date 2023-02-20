@@ -1,6 +1,7 @@
 package tgbotapi
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -395,14 +396,15 @@ func (tb *TelegramBot) Send(config Config) (result *Response, err error) {
 func (tb *TelegramBot) SendWithOptions(config Config, options *SendOptions) (result *Response, err error) {
 	client := tb.client
 
+	request := client.R()
+
 	if options != nil {
 		if options.timeout != 0 {
-			newClient := *client
-			client = newClient.SetTimeout(options.timeout)
+			ctx, cancel := context.WithTimeout(context.Background(), options.timeout)
+			defer cancel()
+			request = request.SetContext(ctx)
 		}
 	}
-
-	request := client.R()
 
 	err = tb.prepareRequest(config, request)
 	if err != nil {
