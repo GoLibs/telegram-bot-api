@@ -32,7 +32,7 @@ func (sv *getChatMember) method() string {
 }
 
 func (sv *getChatMember) endpoint() string {
-	return "getChatAdministrators"
+	return "getChatMember"
 }
 
 func (sv *getChatMember) SetChatId(chatId int64) *getChatMember {
