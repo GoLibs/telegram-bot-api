@@ -21,39 +21,78 @@ type TelegramBot struct {
 	recipientChatId             int64
 	stopReceivingUpdatesChannel chan bool
 	stoppedReceivingUpdates     bool
-	updatesChannel              chan *Update
+	updates                     chan Update
+	randSource                  rand.Source
 	client                      *resty.Client
 	Tools                       tools.Tools
 	logger                      resty.Logger
 }
 
-func NewTelegramBot(apiToken string) (tb *TelegramBot, err error) {
-	rand.Seed(time.Now().UnixNano())
-	address := fmt.Sprintf(`https://api.telegram.org/bot%s/`, apiToken)
+func NewSelfHosted(apiToken string, address string) (tb *TelegramBot, err error) {
+	address = fmt.Sprintf(`%s/bot%s/`, address, apiToken)
+
 	client := resty.New()
 	client.SetHostURL(address)
 	client.SetDoNotParseResponse(true)
+
 	bot := &TelegramBot{
 		apiToken:                    apiToken,
 		apiUrl:                      address,
 		stopReceivingUpdatesChannel: nil,
 		client:                      client,
+		updates:                     make(chan Update),
+		randSource:                  rand.NewSource(time.Now().UnixNano()),
 		Tools:                       tools.Tools{},
 	}
+
 	var resp *Response
 	resp, err = bot.Send(bot.GetMe())
 	if err != nil {
 		return
 	}
+
 	if resp.User == nil {
 		err = errors.New("empty_user_response")
 	}
+
 	tb = bot
+
+	return
+}
+
+func New(apiToken string) (tb *TelegramBot, err error) {
+	address := fmt.Sprintf(`https://api.telegram.org/bot%s/`, apiToken)
+
+	client := resty.New()
+	client.SetHostURL(address)
+	client.SetDoNotParseResponse(true)
+
+	bot := &TelegramBot{
+		apiToken:                    apiToken,
+		apiUrl:                      address,
+		stopReceivingUpdatesChannel: nil,
+		client:                      client,
+		updates:                     make(chan Update),
+		randSource:                  rand.NewSource(time.Now().UnixNano()),
+		Tools:                       tools.Tools{},
+	}
+
+	var resp *Response
+	resp, err = bot.Send(bot.GetMe())
+	if err != nil {
+		return
+	}
+
+	if resp.User == nil {
+		err = errors.New("empty_user_response")
+	}
+
+	tb = bot
+
 	return
 }
 
 func NewTelegramBotWithLogger(apiToken string, logger resty.Logger) (tb *TelegramBot, err error) {
-	rand.Seed(time.Now().UnixNano())
 	address := fmt.Sprintf(`https://api.telegram.org/bot%s/`, apiToken)
 	client := resty.New()
 	client.SetHostURL(address)
@@ -63,7 +102,9 @@ func NewTelegramBotWithLogger(apiToken string, logger resty.Logger) (tb *Telegra
 		apiUrl:                      address,
 		stopReceivingUpdatesChannel: nil,
 		client:                      client,
+		updates:                     make(chan Update),
 		Tools:                       tools.Tools{},
+		randSource:                  rand.NewSource(time.Now().UnixNano()),
 		logger:                      logger,
 	}
 	var resp *Response
@@ -350,33 +391,35 @@ func (tb *TelegramBot) DeleteWebhook() (m *deleteWebhook) {
 	return
 }
 
+// StopReceivingUpdates TODO: Not working yet
 func (tb *TelegramBot) StopReceivingUpdates() {
 	close(tb.stopReceivingUpdatesChannel)
 }
 
 func (tb *TelegramBot) ListenWebhook(address string) (err error) {
-	tb.updatesChannel = make(chan *Update)
 	http.HandleFunc(fmt.Sprintf("/%s", tb.apiToken), func(writer http.ResponseWriter, request *http.Request) {
 		defer request.Body.Close()
-		var u *Update
+
+		var u Update
+
 		j := json.NewDecoder(request.Body)
 		err := j.Decode(&u)
 		if err != nil {
-			// commit
 			fmt.Println("error decoding update", err.Error())
 			return
 		}
-		tb.updatesChannel <- u
+
+		tb.updates <- u
+
 		writer.WriteHeader(http.StatusOK)
 		writer.Write([]byte("ok"))
 	})
-	err = http.ListenAndServe(address, nil)
-	return
+
+	return http.ListenAndServe(address, nil)
 }
 
-func (tb *TelegramBot) Updates() chan *Update {
-	// commit
-	return tb.updatesChannel
+func (tb *TelegramBot) Updates() chan Update {
+	return tb.updates
 }
 
 func (tb *TelegramBot) Send(config Config) (result *Response, err error) {

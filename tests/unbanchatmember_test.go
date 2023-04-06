@@ -8,7 +8,7 @@ import (
 )
 
 func TestUnbanChatMember(t *testing.T) {
-	bot, err := tgbotapi.NewTelegramBot("796493295:AAE3EGLAnba_XAsp_ts3sbPTHpW3nitBc4s")
+	bot, err := tgbotapi.New("796493295:AAE3EGLAnba_XAsp_ts3sbPTHpW3nitBc4s")
 	if err != nil {
 		fmt.Println(err)
 		return

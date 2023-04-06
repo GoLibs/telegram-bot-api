@@ -2,7 +2,7 @@ package tgbotapi
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 )
 
@@ -22,41 +22,44 @@ func (w *webhook) SetPath(pathUrl string) *webhook {
 	return w
 }
 
-func (w *webhook) Listen() (updatesChannel chan Update) {
+func (w *webhook) Listen() error {
 	if w.path == "" {
 		w.path = "/"
 	}
-	updatesChannel = make(chan Update)
-	go w.listen(updatesChannel)
-	return
+
+	return w.listen()
 }
 
-func (w *webhook) listen(updatesChannel chan Update) (err error) {
+func (w *webhook) listen() (err error) {
 	handler := http.NewServeMux()
+
 	handler.HandleFunc(w.path, func(writer http.ResponseWriter, request *http.Request) {
 		writer.WriteHeader(http.StatusOK)
+
 		var (
 			update  Update
 			data    []byte
 			dataErr error
 		)
+
 		defer request.Body.Close()
-		data, dataErr = ioutil.ReadAll(request.Body)
+
+		data, dataErr = io.ReadAll(request.Body)
 		if dataErr != nil {
-			updatesChannel <- newUpdateError(err)
+			w.parent.updates <- newUpdateError(err)
 			return
 		}
+
 		dataErr = json.Unmarshal(data, &update)
 		if dataErr != nil {
-			updatesChannel <- newUpdateError(err)
+			w.parent.updates <- newUpdateError(err)
 			return
 		}
+
 		update.raw = data
-		updatesChannel <- update
+
+		w.parent.updates <- update
 	})
-	err = http.ListenAndServe(w.url, handler)
-	if err != nil {
-		updatesChannel <- newUpdateError(err)
-	}
-	return
+
+	return http.ListenAndServe(w.url, handler)
 }

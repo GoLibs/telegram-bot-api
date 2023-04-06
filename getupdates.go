@@ -79,23 +79,25 @@ func (gu *getUpdates) Get() (result *Response, err error) {
 	return
 }
 
-func (gu *getUpdates) LongPoll() (updateChannel chan Update) {
-	updateChannel = make(chan Update)
-	go gu.pollUpdates(updateChannel)
-	return
+func (gu *getUpdates) LongPoll() error {
+	return gu.pollUpdates()
 }
 
-func (gu *getUpdates) pollUpdates(updateChannel chan Update) {
+func (gu *getUpdates) pollUpdates() error {
+	var update Update
+
 	for true {
 		resp, err := gu.parent.Send(gu)
 		if err != nil {
-			updateChannel <- newUpdateError(err)
-			return
+			return err
 		}
-		var update Update
+
 		for _, update = range resp.Updates {
-			updateChannel <- update
+			gu.parent.updates <- update
 		}
+
 		gu.SetOffset(update.UpdateId + 1)
 	}
+
+	return nil
 }

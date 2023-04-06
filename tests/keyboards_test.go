@@ -9,7 +9,7 @@ import (
 
 func TestKeyboards(t *testing.T) {
 	/**/
-	bot, err := tgbotapi.NewTelegramBot(Tests{}.Defaults().BotToken)
+	bot, err := tgbotapi.New(Tests{}.Defaults().BotToken)
 	if err != nil {
 		fmt.Println(err)
 		return

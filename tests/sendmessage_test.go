@@ -10,7 +10,7 @@ import (
 func TestSendMessage(t *testing.T) {
 	/*var text tgbotapi.Text
 	tex := text.AddWithNewLine("Hello").AddWithNewLine("Boy")*/
-	bot, err := tgbotapi.NewTelegramBot(Tests{}.Defaults().BotToken)
+	bot, err := tgbotapi.New(Tests{}.Defaults().BotToken)
 	if err != nil {
 		fmt.Println(err)
 		return
