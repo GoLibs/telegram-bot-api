@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/Sirupsen/logrus"
 	"math/rand"
 	"net/http"
 	"time"
@@ -476,6 +477,16 @@ func (tb *TelegramBot) SendWithOptions(config Config, options *SendOptions) (res
 	}
 
 	return
+}
+
+// LogrusPeriodicLogger is a logger implementing logrus.Hook that logs periodically
+func (tb *TelegramBot) LogrusPeriodicLogger(chatID int64, interval time.Duration, title string) logrus.Hook {
+	return NewLogrusPeriodicHook(tb, chatID, interval, title)
+}
+
+// LogrusLogger is a logger implementing logrus.Hook that logs immediately
+func (tb *TelegramBot) LogrusLogger(chatID int64) logrus.Hook {
+	return NewLogrusHook(tb, chatID)
 }
 
 func (tb *TelegramBot) logErrBytes(rawBytes []byte, err error) {
